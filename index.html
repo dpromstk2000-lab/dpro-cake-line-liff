@@ -1,0 +1,1333 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#b33a5b">
+  <meta name="description" content="DPRO パティスリー ケーキ・洋菓子予約">
+  <title>DPRO パティスリー｜ケーキ予約</title>
+  <style>
+    :root {
+      --ivory: #fff9f1;
+      --paper: #fffdf9;
+      --white: #fff;
+      --cocoa: #4b2e2b;
+      --cocoa-soft: #72524d;
+      --berry: #b33a5b;
+      --berry-dark: #8f2947;
+      --berry-pale: #fff0f4;
+      --gold: #b88a3b;
+      --gold-pale: #fbf2df;
+      --sage: #3d7a62;
+      --sage-pale: #eaf6f0;
+      --line: #eaded2;
+      --muted: #736763;
+      --danger: #ad2f3f;
+      --shadow: 0 12px 34px rgba(75, 46, 43, .09);
+      --radius: 20px;
+      --font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 8% 0%, rgba(184, 138, 59, .12), transparent 30%),
+        radial-gradient(circle at 95% 10%, rgba(179, 58, 91, .10), transparent 28%),
+        var(--ivory);
+      color: var(--cocoa);
+      font-family: var(--font);
+      font-size: 17px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, input, select, textarea { font: inherit; }
+    button, [role="button"] { touch-action: manipulation; }
+    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: 3px solid rgba(179, 58, 91, .28);
+      outline-offset: 2px;
+    }
+    a { color: var(--berry-dark); }
+    .hidden { display: none !important; }
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 249, 241, .94);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(184, 138, 59, .18);
+    }
+    .topbar-inner {
+      max-width: 1220px;
+      margin: auto;
+      min-height: 70px;
+      padding: 10px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .brand-mark {
+      width: 46px; height: 46px; flex: 0 0 46px;
+      display: grid; place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(145deg, var(--berry), var(--berry-dark));
+      color: #fff; font-size: 23px;
+      box-shadow: 0 7px 18px rgba(179, 58, 91, .25);
+    }
+    .brand-name { font-weight: 850; font-size: 19px; line-height: 1.25; letter-spacing: .02em; }
+    .brand-sub { color: var(--muted); font-size: 14px; line-height: 1.4; }
+    .member-link {
+      min-height: 46px;
+      padding: 10px 16px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--cocoa);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 750;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      white-space: nowrap;
+    }
+
+    .hero {
+      max-width: 1220px;
+      margin: 24px auto 0;
+      padding: 0 22px;
+    }
+    .hero-card {
+      overflow: hidden;
+      position: relative;
+      min-height: 245px;
+      padding: 42px clamp(24px, 5vw, 64px);
+      border: 1px solid rgba(184, 138, 59, .24);
+      border-radius: 30px;
+      background:
+        linear-gradient(112deg, rgba(75, 46, 43, .96), rgba(113, 46, 60, .91)),
+        var(--cocoa);
+      color: #fff;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+    }
+    .hero-card::before, .hero-card::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, .13);
+    }
+    .hero-card::before { width: 280px; height: 280px; right: -60px; top: -100px; }
+    .hero-card::after { width: 180px; height: 180px; right: 110px; bottom: -130px; }
+    .hero-copy { position: relative; z-index: 1; max-width: 720px; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 12px;
+      border: 1px solid rgba(255, 255, 255, .26);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .09);
+      font-size: 14px; font-weight: 750;
+    }
+    h1 { margin: 13px 0 8px; font-size: clamp(28px, 5vw, 43px); line-height: 1.25; letter-spacing: .02em; }
+    .hero p { margin: 0; color: rgba(255,255,255,.84); font-size: clamp(16px, 2.2vw, 18px); }
+    .hero-points { margin-top: 19px; display: flex; flex-wrap: wrap; gap: 9px; }
+    .hero-point {
+      padding: 7px 11px; border-radius: 10px;
+      background: rgba(255,255,255,.11); font-size: 14px; font-weight: 700;
+    }
+
+    .progress-wrap {
+      max-width: 1220px;
+      margin: 20px auto 0;
+      padding: 0 22px;
+    }
+    .progress {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255,255,255,.76);
+    }
+    .progress-step {
+      min-height: 54px;
+      padding: 8px 10px;
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 750;
+    }
+    .progress-step.active { background: var(--berry-pale); color: var(--berry-dark); }
+    .progress-step.done { background: var(--sage-pale); color: var(--sage); }
+    .step-number {
+      width: 27px; height: 27px; flex: 0 0 27px;
+      display: grid; place-items: center;
+      border-radius: 50%;
+      background: rgba(75,46,43,.08);
+      font-size: 14px;
+    }
+    .active .step-number { background: var(--berry); color: #fff; }
+    .done .step-number { background: var(--sage); color: #fff; }
+
+    .layout {
+      max-width: 1220px;
+      margin: 22px auto 70px;
+      padding: 0 22px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 24px;
+      align-items: start;
+    }
+    .main-column { min-width: 0; }
+    .panel {
+      margin-bottom: 22px;
+      padding: clamp(21px, 3.3vw, 32px);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255,253,249,.96);
+      box-shadow: 0 8px 24px rgba(75,46,43,.055);
+    }
+    .section-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; margin-bottom: 22px; }
+    .section-title { margin: 0; font-size: clamp(22px, 3.4vw, 28px); line-height: 1.35; }
+    .section-desc { margin: 5px 0 0; color: var(--muted); font-size: 15px; }
+    .required-tag, .optional-tag {
+      flex: 0 0 auto; padding: 4px 9px; border-radius: 999px;
+      font-size: 14px; font-weight: 800;
+    }
+    .required-tag { background: var(--berry); color: #fff; }
+    .optional-tag { background: #eee7e0; color: var(--cocoa-soft); }
+
+    .category-tabs {
+      display: flex; gap: 9px; overflow-x: auto; padding: 2px 2px 12px;
+      scrollbar-width: thin;
+    }
+    .category-tab {
+      min-height: 48px;
+      padding: 9px 16px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--cocoa);
+      font-size: 15px;
+      font-weight: 750;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .category-tab.active { background: var(--cocoa); color: #fff; border-color: var(--cocoa); }
+
+    .product-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .product-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+    }
+    .product-card:hover { transform: translateY(-2px); border-color: rgba(179,58,91,.34); box-shadow: 0 13px 28px rgba(75,46,43,.09); }
+    .product-image {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 35% 30%, rgba(255,255,255,.88), transparent 25%),
+        linear-gradient(135deg, #f9e8df, #f5d7df);
+      color: var(--berry-dark);
+      font-size: 58px;
+    }
+    .product-image.gift { background: linear-gradient(135deg, #f6ead1, #ecd6ad); color: #946f2c; }
+    .product-image.custom { background: linear-gradient(135deg, #ece3f6, #f4dce8); color: #805287; }
+    .product-image.seasonal { background: linear-gradient(135deg, #e8f0dc, #f7e6cf); color: #667b42; }
+    .product-image img { width: 100%; height: 100%; object-fit: cover; }
+    .featured-badge, .sold-badge {
+      position: absolute; top: 11px; left: 11px;
+      padding: 5px 9px; border-radius: 999px;
+      font-size: 14px; font-weight: 850;
+    }
+    .featured-badge { background: rgba(255,255,255,.92); color: var(--berry-dark); }
+    .sold-badge { background: rgba(75,46,43,.92); color: #fff; }
+    .product-body { padding: 17px; display: flex; flex-direction: column; flex: 1; }
+    .product-type { color: var(--gold); font-size: 14px; font-weight: 850; letter-spacing: .06em; }
+    .product-name { margin: 3px 0 5px; font-size: 19px; line-height: 1.4; font-weight: 850; }
+    .product-desc { color: var(--muted); font-size: 14px; line-height: 1.55; flex: 1; }
+    .allergen { margin-top: 10px; color: var(--cocoa-soft); font-size: 14px; }
+    .product-bottom { margin-top: 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .price { font-weight: 900; font-size: 20px; color: var(--berry-dark); }
+    .price small { font-size: 14px; color: var(--muted); font-weight: 650; }
+    .select-product {
+      min-height: 48px;
+      padding: 9px 15px;
+      border: 0;
+      border-radius: 13px;
+      background: var(--berry);
+      color: #fff;
+      font-weight: 850;
+      cursor: pointer;
+    }
+    .select-product:disabled { opacity: .48; cursor: not-allowed; }
+
+    .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .field { min-width: 0; }
+    .field.full { grid-column: 1 / -1; }
+    label, .field-label { display: block; margin-bottom: 7px; font-weight: 800; font-size: 15px; }
+    .mark-required { color: var(--berry); font-size: 14px; margin-left: 5px; }
+    input, select, textarea {
+      width: 100%;
+      min-height: 52px;
+      padding: 12px 14px;
+      border: 1px solid #d9ccc1;
+      border-radius: 13px;
+      background: #fff;
+      color: var(--cocoa);
+      font-size: 17px;
+    }
+    textarea { min-height: 108px; resize: vertical; }
+    input::placeholder, textarea::placeholder { color: #a59a95; }
+    .help { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
+    .date-summary { margin-top: 9px; color: var(--berry-dark); font-weight: 750; }
+    .slot-status {
+      margin: 14px 0 0;
+      padding: 13px 15px;
+      border-radius: 13px;
+      background: var(--gold-pale);
+      color: #6d5427;
+      font-size: 14px;
+    }
+    .slot-grid { margin-top: 15px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; }
+    .slot-button {
+      min-height: 50px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      color: var(--cocoa);
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .slot-button:hover:not(:disabled) { border-color: var(--berry); }
+    .slot-button.selected { background: var(--berry); color: #fff; border-color: var(--berry); }
+    .slot-button:disabled { background: #eeeae6; color: #9d9691; text-decoration: line-through; cursor: not-allowed; }
+
+    .check-card {
+      padding: 15px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+    }
+    .check-line { display: flex; align-items: flex-start; gap: 11px; cursor: pointer; }
+    .check-line input { width: 22px; height: 22px; min-height: 22px; margin: 3px 0 0; accent-color: var(--berry); }
+    .allergy-notice { color: var(--danger); font-size: 14px; margin: 9px 0 0 33px; }
+
+    .photo-box {
+      padding: 18px;
+      border: 1px dashed rgba(179,58,91,.45);
+      border-radius: 15px;
+      background: var(--berry-pale);
+    }
+    .photo-preview {
+      margin-top: 12px; width: 150px; height: 110px;
+      border-radius: 12px; object-fit: cover; border: 1px solid var(--line);
+    }
+
+    .side-column { position: sticky; top: 92px; }
+    .cart-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+    .cart-head {
+      padding: 20px 21px;
+      background: linear-gradient(135deg, var(--cocoa), #704043);
+      color: #fff;
+    }
+    .cart-title { margin: 0; font-size: 21px; }
+    .cart-sub { margin-top: 3px; color: rgba(255,255,255,.72); font-size: 14px; }
+    .cart-body { padding: 19px; }
+    .empty-cart {
+      padding: 28px 15px;
+      border: 1px dashed var(--line);
+      border-radius: 14px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 14px;
+    }
+    .cart-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+    .cart-item:first-child { padding-top: 0; }
+    .cart-item-name { font-weight: 850; line-height: 1.4; }
+    .cart-item-meta { margin-top: 4px; color: var(--muted); font-size: 14px; }
+    .cart-item-options { margin-top: 6px; color: var(--cocoa-soft); font-size: 14px; }
+    .cart-item-row { margin-top: 9px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .remove-item { min-height: 40px; padding: 6px 10px; border: 0; background: transparent; color: var(--danger); font-weight: 750; cursor: pointer; }
+    .cart-total { padding: 17px 0 4px; display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; }
+    .total-label { color: var(--muted); font-weight: 700; }
+    .total-price { font-size: 27px; font-weight: 900; color: var(--berry-dark); }
+    .pickup-mini {
+      margin-top: 14px; padding: 12px;
+      border-radius: 12px; background: var(--ivory); font-size: 14px;
+    }
+    .submit-button {
+      width: 100%; min-height: 58px; margin-top: 16px;
+      border: 0; border-radius: 15px;
+      background: linear-gradient(135deg, var(--berry), var(--berry-dark));
+      color: #fff; font-size: 18px; font-weight: 900;
+      box-shadow: 0 9px 20px rgba(179,58,91,.24);
+      cursor: pointer;
+    }
+    .submit-button:disabled { opacity: .52; box-shadow: none; cursor: not-allowed; }
+    .submit-help { margin: 9px 0 0; color: var(--muted); text-align: center; font-size: 14px; }
+
+    .loading-block {
+      min-height: 210px; display: grid; place-items: center;
+      color: var(--muted); text-align: center;
+    }
+    .spinner {
+      width: 38px; height: 38px; margin: 0 auto 12px;
+      border: 4px solid #ecdfd5; border-top-color: var(--berry);
+      border-radius: 50%; animation: spin .8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .error-box {
+      margin-bottom: 18px; padding: 15px 17px;
+      border: 1px solid rgba(173,47,63,.28); border-radius: 14px;
+      background: #fff0f1; color: #872332; font-weight: 700;
+    }
+    .toast {
+      position: fixed; z-index: 100; left: 50%; bottom: 24px;
+      transform: translate(-50%, 30px); opacity: 0;
+      max-width: min(92vw, 520px); padding: 13px 18px;
+      border-radius: 13px; background: var(--cocoa); color: #fff;
+      box-shadow: var(--shadow); pointer-events: none;
+      transition: .2s ease;
+      font-weight: 750; text-align: center;
+    }
+    .toast.show { transform: translate(-50%, 0); opacity: 1; }
+    .toast.success { background: var(--sage); }
+    .toast.error { background: var(--danger); }
+
+    .modal-backdrop {
+      position: fixed; inset: 0; z-index: 80;
+      padding: 22px;
+      background: rgba(45,28,26,.62);
+      display: grid; place-items: center;
+      backdrop-filter: blur(4px);
+    }
+    .modal {
+      width: min(680px, 100%);
+      max-height: min(88vh, 820px);
+      overflow-y: auto;
+      border-radius: 22px;
+      background: var(--paper);
+      box-shadow: 0 30px 80px rgba(34,20,19,.32);
+    }
+    .modal-head {
+      position: sticky; top: 0; z-index: 2;
+      padding: 20px 22px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,253,249,.96);
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;
+    }
+    .modal-title { margin: 0; font-size: 23px; line-height: 1.4; }
+    .close-button {
+      width: 46px; height: 46px; flex: 0 0 46px;
+      border: 1px solid var(--line); border-radius: 50%;
+      background: #fff; color: var(--cocoa); font-size: 23px; cursor: pointer;
+    }
+    .modal-body { padding: 22px; }
+    .variant-list { display: grid; gap: 10px; }
+    .variant-option {
+      min-height: 62px; padding: 12px 14px;
+      border: 1px solid var(--line); border-radius: 13px;
+      background: #fff; display: flex; align-items: center; gap: 11px; cursor: pointer;
+    }
+    .variant-option input { width: 22px; height: 22px; min-height: 22px; accent-color: var(--berry); }
+    .variant-option.selected { border-color: var(--berry); background: var(--berry-pale); }
+    .variant-main { flex: 1; }
+    .variant-name { font-weight: 850; }
+    .variant-guide { color: var(--muted); font-size: 14px; }
+    .variant-price { font-weight: 850; color: var(--berry-dark); }
+    .option-list { margin-top: 20px; display: grid; gap: 12px; }
+    .option-card { padding: 14px; border: 1px solid var(--line); border-radius: 13px; background: #fff; }
+    .option-check { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+    .option-check input { width: 22px; height: 22px; min-height: 22px; margin-top: 2px; accent-color: var(--berry); }
+    .option-name { font-weight: 800; }
+    .option-price { color: var(--berry-dark); font-size: 14px; }
+    .option-text { margin-top: 10px; }
+    .quantity-row { margin-top: 19px; display: grid; grid-template-columns: 1fr 140px; gap: 14px; align-items: end; }
+    .modal-total {
+      margin-top: 20px; padding: 15px;
+      border-radius: 14px; background: var(--gold-pale);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .add-cart-button {
+      width: 100%; min-height: 57px; margin-top: 16px;
+      border: 0; border-radius: 14px; background: var(--berry); color: #fff;
+      font-weight: 900; cursor: pointer;
+    }
+
+    .success-page {
+      max-width: 760px; margin: 36px auto 80px; padding: 0 22px;
+    }
+    .success-card {
+      padding: clamp(27px, 5vw, 48px);
+      border: 1px solid #cce4d8; border-radius: 26px;
+      background: #fff; box-shadow: var(--shadow); text-align: center;
+    }
+    .success-icon {
+      width: 76px; height: 76px; margin: auto;
+      display: grid; place-items: center; border-radius: 50%;
+      background: var(--sage-pale); color: var(--sage); font-size: 38px; font-weight: 900;
+    }
+    .success-title { margin: 18px 0 6px; font-size: clamp(26px, 4vw, 34px); }
+    .order-number {
+      margin: 20px 0; padding: 15px;
+      border-radius: 14px; background: var(--ivory); font-size: 21px; font-weight: 900;
+    }
+    .success-detail { text-align: left; max-width: 520px; margin: 0 auto; }
+    .success-row { padding: 10px 0; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 120px 1fr; gap: 12px; }
+    .success-label { color: var(--muted); }
+    .photo-upload-status { margin-top: 18px; padding: 12px; border-radius: 12px; background: var(--gold-pale); }
+    .back-button {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 52px; margin-top: 24px; padding: 10px 22px;
+      border: 1px solid var(--line); border-radius: 13px;
+      background: #fff; color: var(--cocoa); font-weight: 800; text-decoration: none;
+    }
+
+    .mobile-cart-bar { display: none; }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; margin-bottom: 115px; }
+      .side-column { display: none; }
+      .mobile-cart-bar {
+        position: fixed; z-index: 45; left: 0; right: 0; bottom: 0;
+        padding: 10px max(14px, env(safe-area-inset-left)) calc(10px + env(safe-area-inset-bottom));
+        border-top: 1px solid var(--line); background: rgba(255,253,249,.96); backdrop-filter: blur(12px);
+        display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center;
+      }
+      .mobile-total { min-width: 0; }
+      .mobile-total small { display: block; color: var(--muted); font-size: 14px; }
+      .mobile-total strong { font-size: 21px; color: var(--berry-dark); }
+      .mobile-submit { min-height: 52px; padding: 9px 20px; border: 0; border-radius: 13px; background: var(--berry); color: #fff; font-weight: 900; }
+      .mobile-submit:disabled { opacity: .5; }
+    }
+    @media (max-width: 650px) {
+      body { font-size: 17px; }
+      .topbar-inner, .hero, .progress-wrap, .layout { padding-left: 14px; padding-right: 14px; }
+      .topbar-inner { min-height: 65px; }
+      .brand-mark { width: 42px; height: 42px; flex-basis: 42px; }
+      .brand-name { font-size: 17px; }
+      .brand-sub { display: none; }
+      .member-link { padding: 9px 12px; font-size: 14px; }
+      .hero { margin-top: 14px; }
+      .hero-card { min-height: 225px; border-radius: 22px; padding: 28px 22px; }
+      .hero-points { gap: 6px; }
+      .hero-point { font-size: 14px; }
+      .progress { padding: 7px; gap: 4px; }
+      .progress-step { min-height: 52px; padding: 6px 3px; font-size: 13px; display: grid; gap: 2px; }
+      .step-number { margin: auto; width: 23px; height: 23px; }
+      .layout { margin-top: 15px; }
+      .panel { padding: 20px 16px; border-radius: 17px; margin-bottom: 15px; }
+      .section-head { margin-bottom: 18px; }
+      .product-grid { grid-template-columns: 1fr; }
+      .product-card { display: grid; grid-template-columns: 124px 1fr; }
+      .product-image { aspect-ratio: auto; min-height: 100%; font-size: 45px; }
+      .product-body { padding: 14px; }
+      .product-name { font-size: 17px; }
+      .product-desc { display: none; }
+      .allergen { margin-top: 5px; }
+      .product-bottom { margin-top: 10px; }
+      .price { font-size: 17px; }
+      .select-product { min-height: 45px; padding: 7px 11px; font-size: 14px; }
+      .field-grid { grid-template-columns: 1fr; gap: 14px; }
+      .field.full { grid-column: auto; }
+      .slot-grid { grid-template-columns: repeat(3, 1fr); }
+      .modal-backdrop { padding: 0; align-items: end; }
+      .modal { width: 100%; max-height: 93vh; border-radius: 24px 24px 0 0; }
+      .modal-head, .modal-body { padding-left: 17px; padding-right: 17px; }
+      .quantity-row { grid-template-columns: 1fr 120px; }
+      .success-row { grid-template-columns: 95px 1fr; }
+    }
+    @media (max-width: 390px) {
+      .member-link span:last-child { display: none; }
+      .slot-grid { grid-template-columns: repeat(2, 1fr); }
+      .product-card { grid-template-columns: 105px 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">♛</div>
+        <div>
+          <div class="brand-name" id="shopName">DPRO パティスリー</div>
+          <div class="brand-sub">ケーキ・洋菓子のご予約</div>
+        </div>
+      </div>
+      <a class="member-link" id="memberLink" href="member.html"><span aria-hidden="true">▣</span><span>予約確認</span></a>
+    </div>
+  </header>
+
+  <main id="bookingPage">
+    <section class="hero">
+      <div class="hero-card">
+        <div class="hero-copy">
+          <div class="eyebrow">✦ 大切な日のケーキをLINEで予約</div>
+          <h1>想いを添える、<br>とっておきのケーキ。</h1>
+          <p id="shopSubtitle">商品・サイズ・メッセージ・受取時間まで、ゆっくり選べます。</p>
+          <div class="hero-points">
+            <span class="hero-point">30分単位で受取</span>
+            <span class="hero-point">プレート・ろうそく指定</span>
+            <span class="hero-point">オーダー写真登録</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="progress-wrap">
+      <nav class="progress" aria-label="予約の進み方">
+        <div class="progress-step active" data-progress="1"><span class="step-number">1</span><span>商品</span></div>
+        <div class="progress-step" data-progress="2"><span class="step-number">2</span><span>日時</span></div>
+        <div class="progress-step" data-progress="3"><span class="step-number">3</span><span>お客様</span></div>
+        <div class="progress-step" data-progress="4"><span class="step-number">4</span><span>確認</span></div>
+      </nav>
+    </div>
+
+    <div class="layout">
+      <div class="main-column">
+        <div id="globalError" class="error-box hidden" role="alert"></div>
+
+        <section class="panel" id="productSection">
+          <div class="section-head">
+            <div>
+              <h2 class="section-title">1. 商品を選ぶ</h2>
+              <p class="section-desc">サイズやオプションは、商品を選んだ後に指定できます。</p>
+            </div>
+            <span class="required-tag">必須</span>
+          </div>
+          <div class="category-tabs" id="categoryTabs" aria-label="商品カテゴリ"></div>
+          <div id="productLoading" class="loading-block">
+            <div><div class="spinner"></div>商品を読み込んでいます</div>
+          </div>
+          <div class="product-grid hidden" id="productGrid"></div>
+        </section>
+
+        <section class="panel" id="dateSection">
+          <div class="section-head">
+            <div>
+              <h2 class="section-title">2. 受取日時を選ぶ</h2>
+              <p class="section-desc">商品をカートへ入れてから、受取日を選んでください。</p>
+            </div>
+            <span class="required-tag">必須</span>
+          </div>
+          <div class="field">
+            <label for="pickupDate">受取日<span class="mark-required">必須</span></label>
+            <input type="date" id="pickupDate" disabled>
+            <div class="date-summary" id="dateSummary"></div>
+          </div>
+          <div class="slot-status" id="slotStatus">商品を選ぶと、受取可能時間を確認できます。</div>
+          <div class="slot-grid" id="slotGrid" aria-label="受取時間"></div>
+        </section>
+
+        <section class="panel" id="customerSection">
+          <div class="section-head">
+            <div>
+              <h2 class="section-title">3. お客様情報</h2>
+              <p class="section-desc" id="customerLead">初回のみご入力ください。次回からLINE情報で自動表示します。</p>
+            </div>
+            <span class="required-tag">必須</span>
+          </div>
+          <div id="returningCustomer" class="slot-status hidden"></div>
+          <div class="field-grid">
+            <div class="field">
+              <label for="customerName">お名前<span class="mark-required">必須</span></label>
+              <input id="customerName" autocomplete="name" maxlength="100" placeholder="例：田中 花子">
+            </div>
+            <div class="field">
+              <label for="customerKana">フリガナ</label>
+              <input id="customerKana" autocomplete="off" maxlength="100" placeholder="例：タナカ ハナコ">
+            </div>
+            <div class="field">
+              <label for="phone">電話番号<span class="mark-required">必須</span></label>
+              <input id="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="30" placeholder="例：090-1234-5678">
+            </div>
+            <div class="field">
+              <label for="email">メールアドレス</label>
+              <input id="email" type="email" autocomplete="email" maxlength="200" placeholder="任意">
+            </div>
+            <div class="field full">
+              <label for="allergyNotes">アレルギー・店舗へ伝えたいこと</label>
+              <textarea id="allergyNotes" maxlength="1000" placeholder="アレルギーがある場合は、対象食材と程度をご入力ください。"></textarea>
+            </div>
+            <div class="field full">
+              <div class="check-card">
+                <label class="check-line" for="allergyAck">
+                  <input id="allergyAck" type="checkbox">
+                  <span>アレルギーに関する注意事項を確認しました。<span class="mark-required">必須</span></span>
+                </label>
+                <p class="allergy-notice" id="allergyNotice">同一厨房・器具で他のアレルゲンを含む商品を製造しています。アレルギーをお持ちの場合は事前に店舗へご相談ください。</p>
+              </div>
+            </div>
+            <div class="field full hidden" id="photoField">
+              <div class="photo-box">
+                <label for="referencePhoto">オーダーケーキの参考写真</label>
+                <input id="referencePhoto" type="file" accept="image/jpeg,image/png,image/webp">
+                <p class="help">JPEG・PNG・WebP、5MB以下。予約登録後に非公開で保存します。</p>
+                <img id="photoPreview" class="photo-preview hidden" alt="選択した参考写真">
+              </div>
+            </div>
+            <div class="field full">
+              <label for="customerNote">その他のご希望</label>
+              <textarea id="customerNote" maxlength="2000" placeholder="受取時のご希望などがあればご入力ください。"></textarea>
+            </div>
+          </div>
+          <button type="button" id="demoFill" class="category-tab hidden" style="margin-top:16px">デモ情報を入力</button>
+        </section>
+      </div>
+
+      <aside class="side-column" aria-label="予約内容">
+        <div class="cart-card">
+          <div class="cart-head">
+            <h2 class="cart-title">ご予約内容</h2>
+            <div class="cart-sub">内容を確認して予約へ進みます</div>
+          </div>
+          <div class="cart-body">
+            <div id="cartItems"></div>
+            <div class="cart-total">
+              <span class="total-label">合計</span>
+              <span class="total-price" id="cartTotal">¥0</span>
+            </div>
+            <div class="pickup-mini" id="pickupMini">受取日時：未選択</div>
+            <button class="submit-button" id="submitOrder" type="button">予約内容を確認して送信</button>
+            <p class="submit-help">送信後、店舗で内容を確認して予約確定となります。</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <div class="mobile-cart-bar" id="mobileCartBar">
+    <div class="mobile-total"><small id="mobileItemCount">商品未選択</small><strong id="mobileTotal">¥0</strong></div>
+    <button class="mobile-submit" id="mobileSubmit" type="button">予約する</button>
+  </div>
+
+  <section id="successPage" class="success-page hidden" aria-live="polite">
+    <div class="success-card">
+      <div class="success-icon">✓</div>
+      <h1 class="success-title">ご予約を受け付けました</h1>
+      <p>店舗で内容を確認後、予約確定のご連絡をお送りします。</p>
+      <div class="order-number">注文番号：<span id="successOrderNo"></span></div>
+      <div class="success-detail">
+        <div class="success-row"><span class="success-label">お名前</span><strong id="successName"></strong></div>
+        <div class="success-row"><span class="success-label">受取日時</span><strong id="successPickup"></strong></div>
+        <div class="success-row"><span class="success-label">合計</span><strong id="successTotal"></strong></div>
+      </div>
+      <div id="photoUploadStatus" class="photo-upload-status hidden"></div>
+      <a href="index.html" class="back-button">新しい予約をする</a>
+    </div>
+  </section>
+
+  <div id="productModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modal-head">
+        <div><div class="product-type" id="modalType"></div><h2 class="modal-title" id="modalTitle"></h2></div>
+        <button class="close-button" id="closeModal" type="button" aria-label="閉じる">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="field-label">サイズ・種類<span class="mark-required">必須</span></div>
+        <div class="variant-list" id="variantList"></div>
+        <div class="option-list" id="optionList"></div>
+        <div class="quantity-row">
+          <div><div class="field-label">数量</div><p class="help">商品ごとの受付上限内で選択できます。</p></div>
+          <select id="itemQuantity" aria-label="数量"></select>
+        </div>
+        <div class="field" style="margin-top:16px">
+          <label for="itemNote">商品についてのご希望</label>
+          <textarea id="itemNote" maxlength="1000" placeholder="飾り付けなど、追加のご希望があれば入力してください。"></textarea>
+        </div>
+        <div class="modal-total"><span>商品小計</span><strong id="modalTotal">¥0</strong></div>
+        <button class="add-cart-button" id="addToCart" type="button">この内容でカートへ入れる</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="config.js"></script>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <script>
+    (() => {
+      "use strict";
+      const CONFIG = window.DPRO_CAKE_CONFIG || {
+        apiBase: "https://dpro-cake-line-api.dpromstk2000.workers.dev",
+        liffId: "",
+        demoLineUserId: "cake_demo_line_001",
+        memberPage: "member.html"
+      };
+      const state = {
+        shop: null,
+        settings: null,
+        categories: [],
+        products: [],
+        category: "all",
+        cart: [],
+        selectedProduct: null,
+        selectedVariantId: "",
+        selectedOptions: new Map(),
+        pickupDate: "",
+        pickupTime: "",
+        slots: [],
+        lineUserId: "",
+        referenceFile: null,
+        submitting: false,
+      };
+
+      const $ = (id) => document.getElementById(id);
+      const yen = (value) => `¥${Number(value || 0).toLocaleString("ja-JP")}`;
+      const escapeHtml = (value) => String(value ?? "").replace(/[&<>'"]/g, (char) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"
+      })[char]);
+      const todayJst = () => new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10);
+      const addDays = (dateString, days) => {
+        const date = new Date(`${dateString}T12:00:00Z`);
+        date.setUTCDate(date.getUTCDate() + days);
+        return date.toISOString().slice(0, 10);
+      };
+      const formatDate = (dateString) => {
+        if (!dateString) return "未選択";
+        const date = new Date(`${dateString}T12:00:00Z`);
+        return new Intl.DateTimeFormat("ja-JP", { year: "numeric", month: "long", day: "numeric", weekday: "short", timeZone: "UTC" }).format(date);
+      };
+      const normalizePhone = (value) => {
+        let phone = String(value || "").replace(/[０-９]/g, (d) => String.fromCharCode(d.charCodeAt(0) - 0xfee0)).replace(/＋/g, "+").replace(/[^0-9+]/g, "");
+        if (phone.startsWith("+81")) phone = `0${phone.slice(3)}`;
+        if (phone.startsWith("0081")) phone = `0${phone.slice(4)}`;
+        return phone.replace(/\D/g, "");
+      };
+      const productTypeName = (type) => ({
+        whole_cake: "WHOLE CAKE", petit_gateau: "PETIT GÂTEAU", baked_gift: "BAKED GIFT",
+        custom_cake: "ORDER CAKE", seasonal: "SEASONAL"
+      })[type] || "PÂTISSERIE";
+      const productIcon = (type) => ({
+        whole_cake: "🎂", petit_gateau: "🍰", baked_gift: "🎁", custom_cake: "✧", seasonal: "🍓"
+      })[type] || "🍰";
+      const imageClass = (type) => type === "baked_gift" ? "gift" : type === "custom_cake" ? "custom" : type === "seasonal" ? "seasonal" : "";
+
+      async function api(path, options = {}) {
+        const response = await fetch(`${CONFIG.apiBase}${path}`, {
+          ...options,
+          headers: { "Content-Type": "application/json", ...(options.headers || {}) }
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          const error = new Error(data.message || `通信エラー（${response.status}）`);
+          error.code = data.error;
+          error.details = data.details;
+          error.status = response.status;
+          throw error;
+        }
+        return data;
+      }
+
+      function showToast(message, type = "") {
+        const toast = $("toast");
+        toast.textContent = message;
+        toast.className = `toast ${type} show`;
+        clearTimeout(showToast.timer);
+        showToast.timer = setTimeout(() => toast.classList.remove("show"), 3000);
+      }
+
+      function showError(message) {
+        const box = $("globalError");
+        box.textContent = message;
+        box.classList.remove("hidden");
+        box.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+      function clearError() { $("globalError").classList.add("hidden"); }
+
+      function setProgress(number) {
+        document.querySelectorAll("[data-progress]").forEach((element) => {
+          const value = Number(element.dataset.progress);
+          element.classList.toggle("done", value < number);
+          element.classList.toggle("active", value === number);
+          if (value < number) element.querySelector(".step-number").textContent = "✓";
+          else element.querySelector(".step-number").textContent = String(value);
+        });
+      }
+
+      async function initLine() {
+        const params = new URLSearchParams(location.search);
+        state.lineUserId = params.get("line_user_id") || "";
+        if (!state.lineUserId && params.get("demo") === "1") state.lineUserId = CONFIG.demoLineUserId;
+        if (!state.lineUserId && CONFIG.liffId && window.liff) {
+          try {
+            await liff.init({ liffId: CONFIG.liffId });
+            if (liff.isLoggedIn()) {
+              const profile = await liff.getProfile();
+              state.lineUserId = profile.userId || "";
+              if (!$('customerName').value && profile.displayName) $('customerName').value = profile.displayName;
+            }
+          } catch (error) {
+            console.warn("LIFF initialization skipped", error);
+          }
+        }
+        if (state.lineUserId) await loadReturningCustomer();
+        const memberUrl = new URL(CONFIG.memberPage || "member.html", location.href);
+        if (state.lineUserId) memberUrl.searchParams.set("line_user_id", state.lineUserId);
+        $("memberLink").href = memberUrl.toString();
+      }
+
+      async function loadReturningCustomer() {
+        try {
+          const data = await api(`/api/customer/by-line?line_user_id=${encodeURIComponent(state.lineUserId)}`);
+          if (!data.found) return;
+          const customer = data.customer;
+          $("customerName").value = customer.customer_name || "";
+          $("customerKana").value = customer.customer_name_kana || "";
+          $("phone").value = customer.phone || "";
+          $("email").value = customer.email || "";
+          $("allergyNotes").value = customer.allergy_notes || "";
+          $("returningCustomer").textContent = `${customer.customer_name}様の登録情報を表示しました。変更がある場合は上書きしてください。`;
+          $("returningCustomer").classList.remove("hidden");
+          $("customerLead").textContent = "登録済みのお客様情報を自動表示しています。";
+        } catch (error) {
+          console.warn("Returning customer lookup failed", error);
+        }
+      }
+
+      async function initialize() {
+        const params = new URLSearchParams(location.search);
+        if (params.get("demo") === "1") $("demoFill").classList.remove("hidden");
+        const minDate = todayJst();
+        $("pickupDate").min = minDate;
+        $("pickupDate").value = "";
+        try {
+          const [shopData, categoryData, productData] = await Promise.all([
+            api("/api/shop"), api("/api/categories"), api("/api/products")
+          ]);
+          state.shop = shopData.shop;
+          state.settings = shopData.settings;
+          state.categories = categoryData.categories || [];
+          state.products = productData.products || [];
+          $("shopName").textContent = state.shop.shop_name;
+          $("shopSubtitle").textContent = state.shop.subtitle || "商品・サイズ・メッセージ・受取時間まで、ゆっくり選べます。";
+          $("allergyNotice").textContent = state.settings.allergy_notice || $("allergyNotice").textContent;
+          $("pickupDate").max = addDays(minDate, Number(state.settings.booking_open_days || 60));
+          renderCategories();
+          renderProducts();
+          $("productLoading").classList.add("hidden");
+          $("productGrid").classList.remove("hidden");
+          await initLine();
+          renderCart();
+        } catch (error) {
+          $("productLoading").innerHTML = `<div class="error-box">${escapeHtml(error.message)}<br><button class="category-tab" type="button" onclick="location.reload()">再読み込み</button></div>`;
+        }
+      }
+
+      function renderCategories() {
+        const categories = [{ id: "all", category_name: "すべて" }, ...state.categories];
+        $("categoryTabs").innerHTML = categories.map((category) => `
+          <button type="button" class="category-tab ${state.category === category.id ? "active" : ""}" data-category="${escapeHtml(category.id)}">
+            ${escapeHtml(category.category_name)}
+          </button>`).join("");
+        $("categoryTabs").querySelectorAll("[data-category]").forEach((button) => button.addEventListener("click", () => {
+          state.category = button.dataset.category;
+          renderCategories(); renderProducts();
+        }));
+      }
+
+      function renderProducts() {
+        const products = state.products.filter((product) => state.category === "all" || product.category_id === state.category);
+        $("productGrid").innerHTML = products.length ? products.map((product) => {
+          const minimum = Math.min(...(product.variants || []).filter((v) => v.is_active).map((v) => Number(v.price)), Number(product.base_price || 0));
+          const unavailable = product.is_sold_out || !product.variants?.some((variant) => variant.is_active && !variant.is_sold_out);
+          const image = product.image_url
+            ? `<img src="${escapeHtml(product.image_url)}" alt="${escapeHtml(product.product_name)}" loading="lazy">`
+            : `<span aria-hidden="true">${productIcon(product.product_type)}</span>`;
+          return `<article class="product-card">
+            <div class="product-image ${imageClass(product.product_type)}">${image}
+              ${product.is_featured ? '<span class="featured-badge">おすすめ</span>' : ""}
+              ${unavailable ? '<span class="sold-badge">受付停止</span>' : ""}
+            </div>
+            <div class="product-body">
+              <div class="product-type">${productTypeName(product.product_type)}</div>
+              <h3 class="product-name">${escapeHtml(product.product_name)}</h3>
+              <div class="product-desc">${escapeHtml(product.description || "")}</div>
+              <div class="allergen">アレルゲン：${escapeHtml(product.allergen_summary || "店舗へご確認ください")}</div>
+              <div class="product-bottom"><div class="price">${yen(minimum)}<small>～</small></div>
+                <button class="select-product" type="button" data-product-id="${product.id}" ${unavailable ? "disabled" : ""}>選ぶ</button>
+              </div>
+            </div>
+          </article>`;
+        }).join("") : '<div class="empty-cart" style="grid-column:1/-1">このカテゴリの商品はありません。</div>';
+        $("productGrid").querySelectorAll("[data-product-id]").forEach((button) => button.addEventListener("click", () => openProduct(button.dataset.productId)));
+      }
+
+      function openProduct(productId) {
+        const product = state.products.find((item) => item.id === productId);
+        if (!product) return;
+        state.selectedProduct = product;
+        state.selectedVariantId = product.variants.find((variant) => variant.is_active && !variant.is_sold_out)?.id || "";
+        state.selectedOptions = new Map();
+        $("itemNote").value = "";
+        $("modalType").textContent = productTypeName(product.product_type);
+        $("modalTitle").textContent = product.product_name;
+        renderVariantList();
+        renderOptionList();
+        renderQuantity();
+        updateModalTotal();
+        $("productModal").classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+        setTimeout(() => $("closeModal").focus(), 20);
+      }
+
+      function closeModal() {
+        $("productModal").classList.add("hidden");
+        document.body.style.overflow = "";
+      }
+
+      function renderVariantList() {
+        const product = state.selectedProduct;
+        $("variantList").innerHTML = product.variants.filter((variant) => variant.is_active).map((variant) => `
+          <label class="variant-option ${state.selectedVariantId === variant.id ? "selected" : ""}">
+            <input type="radio" name="variant" value="${variant.id}" ${state.selectedVariantId === variant.id ? "checked" : ""} ${variant.is_sold_out ? "disabled" : ""}>
+            <span class="variant-main"><span class="variant-name">${escapeHtml(variant.variant_name)}</span><span class="variant-guide">${escapeHtml(variant.serving_guide || "")}${variant.is_sold_out ? "（売切れ）" : ""}</span></span>
+            <span class="variant-price">${yen(variant.price)}</span>
+          </label>`).join("");
+        $("variantList").querySelectorAll("input[name=variant]").forEach((input) => input.addEventListener("change", () => {
+          state.selectedVariantId = input.value;
+          renderVariantList(); renderQuantity(); updateModalTotal();
+        }));
+      }
+
+      function renderOptionList() {
+        const options = state.selectedProduct.options || [];
+        $("optionList").innerHTML = options.length ? `<div class="field-label">オプション</div>${options.map((option) => {
+          const selected = state.selectedOptions.has(option.id);
+          return `<div class="option-card" data-option-card="${option.id}">
+            <label class="option-check">
+              <input type="checkbox" data-option-id="${option.id}" ${selected ? "checked" : ""}>
+              <span><span class="option-name">${escapeHtml(option.option_name)}${option.is_required ? '<span class="mark-required">必須</span>' : ""}</span>
+              <span class="option-price">${Number(option.price_delta) ? ` ＋${yen(option.price_delta)}` : " 無料"}</span>
+              <span class="help">${escapeHtml(option.description || "")}</span></span>
+            </label>
+            ${option.requires_text ? `<input class="option-text ${selected ? "" : "hidden"}" data-option-text="${option.id}" maxlength="500" placeholder="内容を入力してください" value="${escapeHtml(state.selectedOptions.get(option.id)?.option_text || "")}">` : ""}
+          </div>`;
+        }).join("")}` : "";
+        $("optionList").querySelectorAll("[data-option-id]").forEach((input) => input.addEventListener("change", () => {
+          const option = options.find((item) => item.id === input.dataset.optionId);
+          if (input.checked) state.selectedOptions.set(option.id, { ...option, option_text: "" });
+          else state.selectedOptions.delete(option.id);
+          renderOptionList(); updateModalTotal();
+        }));
+        $("optionList").querySelectorAll("[data-option-text]").forEach((input) => input.addEventListener("input", () => {
+          const current = state.selectedOptions.get(input.dataset.optionText);
+          if (current) current.option_text = input.value;
+        }));
+      }
+
+      function renderQuantity() {
+        const product = state.selectedProduct;
+        const variant = product.variants.find((item) => item.id === state.selectedVariantId);
+        const maximum = Math.min(Number(product.max_quantity || 10), Number(variant?.daily_stock_limit ?? product.max_quantity ?? 10));
+        const minimum = Number(product.min_quantity || 1);
+        const current = Math.min(Math.max(Number($("itemQuantity").value || minimum), minimum), maximum);
+        $("itemQuantity").innerHTML = Array.from({ length: Math.max(0, maximum - minimum + 1) }, (_, index) => minimum + index).map((value) => `<option value="${value}" ${value === current ? "selected" : ""}>${value}個</option>`).join("");
+      }
+
+      function modalCalculation() {
+        const variant = state.selectedProduct?.variants.find((item) => item.id === state.selectedVariantId);
+        const quantity = Number($("itemQuantity").value || 1);
+        const optionAmount = [...state.selectedOptions.values()].reduce((sum, option) => sum + Number(option.price_delta || 0), 0) * quantity;
+        return { variant, quantity, optionAmount, total: Number(variant?.price || 0) * quantity + optionAmount };
+      }
+      function updateModalTotal() { $("modalTotal").textContent = yen(modalCalculation().total); }
+
+      function addToCart() {
+        const product = state.selectedProduct;
+        const { variant, quantity, optionAmount, total } = modalCalculation();
+        if (!variant) return showToast("サイズを選択してください。", "error");
+        for (const option of product.options.filter((item) => item.is_required)) {
+          if (!state.selectedOptions.has(option.id)) return showToast(`${option.option_name}を選択してください。`, "error");
+        }
+        for (const option of state.selectedOptions.values()) {
+          if (option.requires_text && !String(option.option_text || "").trim()) return showToast(`${option.option_name}の内容を入力してください。`, "error");
+        }
+        state.cart.push({
+          key: crypto.randomUUID(), product, variant, quantity, optionAmount, total,
+          options: [...state.selectedOptions.values()].map((option) => ({ ...option })),
+          itemNote: $("itemNote").value.trim()
+        });
+        closeModal();
+        state.pickupTime = "";
+        $("pickupDate").disabled = false;
+        updatePhotoField();
+        renderCart();
+        if (state.pickupDate) loadSlots();
+        showToast("カートへ追加しました。", "success");
+        setProgress(2);
+        $("dateSection").scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      function updatePhotoField() {
+        const custom = state.cart.some((item) => item.product.product_type === "custom_cake");
+        $("photoField").classList.toggle("hidden", !custom);
+        if (!custom) {
+          state.referenceFile = null;
+          $("referencePhoto").value = "";
+          $("photoPreview").classList.add("hidden");
+        }
+      }
+
+      function cartTotal() { return state.cart.reduce((sum, item) => sum + item.total, 0); }
+      function renderCart() {
+        const container = $("cartItems");
+        if (!state.cart.length) {
+          container.innerHTML = '<div class="empty-cart">商品を選ぶと、ここに予約内容が表示されます。</div>';
+        } else {
+          container.innerHTML = state.cart.map((item) => `<div class="cart-item">
+            <div class="cart-item-name">${escapeHtml(item.product.product_name)}</div>
+            <div class="cart-item-meta">${escapeHtml(item.variant.variant_name)}・${item.quantity}個</div>
+            ${item.options.length ? `<div class="cart-item-options">${item.options.map((option) => `${escapeHtml(option.option_name)}${option.option_text ? `：${escapeHtml(option.option_text)}` : ""}`).join("<br>")}</div>` : ""}
+            <div class="cart-item-row"><strong>${yen(item.total)}</strong><button class="remove-item" data-remove="${item.key}" type="button">削除</button></div>
+          </div>`).join("");
+          container.querySelectorAll("[data-remove]").forEach((button) => button.addEventListener("click", () => {
+            state.cart = state.cart.filter((item) => item.key !== button.dataset.remove);
+            state.pickupTime = ""; state.slots = [];
+            updatePhotoField(); renderCart(); renderSlots();
+            if (!state.cart.length) { $("pickupDate").disabled = true; $("pickupDate").value = ""; state.pickupDate = ""; setProgress(1); }
+            else if (state.pickupDate) loadSlots();
+          }));
+        }
+        const total = cartTotal();
+        $("cartTotal").textContent = yen(total);
+        $("mobileTotal").textContent = yen(total);
+        $("mobileItemCount").textContent = state.cart.length ? `${state.cart.reduce((sum, item) => sum + item.quantity, 0)}点` : "商品未選択";
+        const pickup = state.pickupDate && state.pickupTime ? `${formatDate(state.pickupDate)} ${state.pickupTime}` : "未選択";
+        $("pickupMini").textContent = `受取日時：${pickup}`;
+        updateSubmitState();
+      }
+
+      async function loadSlots() {
+        state.pickupDate = $("pickupDate").value;
+        state.pickupTime = "";
+        renderCart();
+        if (!state.pickupDate || !state.cart.length) return renderSlots();
+        $("dateSummary").textContent = formatDate(state.pickupDate);
+        $("slotStatus").textContent = "受取可能時間を確認しています…";
+        $("slotGrid").innerHTML = '<div class="spinner" style="grid-column:1/-1"></div>';
+        try {
+          const ids = [...new Set(state.cart.map((item) => item.product.id))];
+          const params = new URLSearchParams({ date: state.pickupDate });
+          ids.forEach((id) => params.append("product_id", id));
+          const data = await api(`/api/time-slots?${params}`);
+          state.slots = data.slots || [];
+          $("slotStatus").textContent = data.reason || (state.slots.length ? "○の時間を選択できます。満枠の時間は選択できません。" : "選択できる時間がありません。");
+          renderSlots();
+        } catch (error) {
+          state.slots = [];
+          $("slotStatus").textContent = error.message;
+          renderSlots();
+        }
+      }
+
+      function renderSlots() {
+        if (!state.pickupDate) { $("slotGrid").innerHTML = ""; $("dateSummary").textContent = ""; return; }
+        $("slotGrid").innerHTML = state.slots.map((slot) => `<button type="button" class="slot-button ${state.pickupTime === slot.time ? "selected" : ""}" data-time="${slot.time}" ${slot.available ? "" : "disabled"}>${slot.time}</button>`).join("");
+        $("slotGrid").querySelectorAll("[data-time]").forEach((button) => button.addEventListener("click", () => {
+          state.pickupTime = button.dataset.time;
+          renderSlots(); renderCart(); setProgress(3);
+          $("customerSection").scrollIntoView({ behavior: "smooth", block: "start" });
+        }));
+        updateSubmitState();
+      }
+
+      function validateForm() {
+        if (!state.cart.length) return "商品を1つ以上選択してください。";
+        if (!state.pickupDate || !state.pickupTime) return "受取日と受取時間を選択してください。";
+        if (!$("customerName").value.trim()) return "お名前を入力してください。";
+        const phone = normalizePhone($("phone").value);
+        if (!/^0\d{9,10}$/.test(phone)) return "電話番号を正しく入力してください。";
+        if (!$("allergyAck").checked) return "アレルギーに関する注意事項を確認してください。";
+        return "";
+      }
+
+      function updateSubmitState() {
+        const disabled = state.submitting || Boolean(validateForm());
+        $("submitOrder").disabled = disabled;
+        $("mobileSubmit").disabled = disabled;
+      }
+
+      function orderPayload(confirmDuplicate = false) {
+        return {
+          line_user_id: state.lineUserId || null,
+          customer_name: $("customerName").value.trim(),
+          customer_name_kana: $("customerKana").value.trim(),
+          phone: $("phone").value.trim(),
+          email: $("email").value.trim() || null,
+          pickup_date: state.pickupDate,
+          pickup_time: state.pickupTime,
+          allergy_acknowledged: $("allergyAck").checked,
+          allergy_notes: $("allergyNotes").value.trim(),
+          customer_note: $("customerNote").value.trim(),
+          payment_method: "pay_at_store",
+          confirm_duplicate: confirmDuplicate,
+          request_key: state.requestKey,
+          items: state.cart.map((item) => ({
+            product_id: item.product.id,
+            variant_id: item.variant.id,
+            quantity: item.quantity,
+            options: item.options.map((option) => ({ option_id: option.id, option_text: option.option_text || "" })),
+            item_note: item.itemNote
+          }))
+        };
+      }
+
+      async function submitOrder(confirmDuplicate = false) {
+        clearError();
+        const validation = validateForm();
+        if (validation) { showError(validation); return; }
+        if (!state.requestKey) state.requestKey = crypto.randomUUID();
+        state.submitting = true;
+        $("submitOrder").textContent = "予約を送信しています…";
+        $("mobileSubmit").textContent = "送信中…";
+        updateSubmitState();
+        setProgress(4);
+        try {
+          const data = await api("/api/orders", {
+            method: "POST",
+            headers: { "Idempotency-Key": state.requestKey },
+            body: JSON.stringify(orderPayload(confirmDuplicate))
+          });
+          const order = data.order;
+          let photoMessage = "";
+          if (state.referenceFile) {
+            $("photoUploadStatus").classList.remove("hidden");
+            $("photoUploadStatus").textContent = "参考写真を登録しています…";
+            try {
+              const image = await resizeImage(state.referenceFile);
+              await api(`/api/orders/${encodeURIComponent(order.order_no)}/photos`, {
+                method: "POST",
+                body: JSON.stringify({
+                  access_token: order.access_token,
+                  photo_type: "reference",
+                  original_filename: state.referenceFile.name,
+                  mime_type: image.mimeType,
+                  base64: image.base64
+                })
+              });
+              photoMessage = "参考写真も登録しました。";
+            } catch (photoError) {
+              photoMessage = `予約は完了しましたが、写真を登録できませんでした：${photoError.message}`;
+            }
+          }
+          localStorage.setItem("dpro_cake_last_access_token", order.access_token || "");
+          localStorage.setItem("dpro_cake_last_line_user_id", state.lineUserId || "");
+          showSuccess(order, photoMessage);
+        } catch (error) {
+          if (error.code === "DUPLICATE_ORDER_WARNING") {
+            const confirmed = window.confirm("同じ電話番号・受取日時の予約があります。別の予約として続けますか？");
+            state.submitting = false;
+            if (confirmed) return submitOrder(true);
+            showError("重複の可能性があるため送信を中止しました。予約内容をご確認ください。");
+          } else {
+            showError(error.message);
+            if (["PICKUP_SLOT_UNAVAILABLE", "CAPACITY_EXCEEDED", "CAPACITY_RACE_GUARD", "DAILY_STOCK_EXCEEDED", "STOCK_RACE_GUARD"].includes(error.code)) loadSlots();
+          }
+        } finally {
+          state.submitting = false;
+          $("submitOrder").textContent = "予約内容を確認して送信";
+          $("mobileSubmit").textContent = "予約する";
+          updateSubmitState();
+        }
+      }
+
+      function showSuccess(order, photoMessage) {
+        $("bookingPage").classList.add("hidden");
+        $("mobileCartBar").classList.add("hidden");
+        $("successPage").classList.remove("hidden");
+        $("successOrderNo").textContent = order.order_no;
+        $("successName").textContent = order.customer_name;
+        $("successPickup").textContent = `${formatDate(order.pickup_date)} ${String(order.pickup_time).slice(0,5)}`;
+        $("successTotal").textContent = yen(order.total_amount);
+        if (photoMessage) {
+          $("photoUploadStatus").textContent = photoMessage;
+          $("photoUploadStatus").classList.remove("hidden");
+        }
+        document.title = `予約受付完了｜${state.shop?.shop_name || "DPRO パティスリー"}`;
+        scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      async function resizeImage(file) {
+        if (file.size > 5 * 1024 * 1024) throw new Error("画像は5MB以下にしてください。");
+        const url = URL.createObjectURL(file);
+        try {
+          const image = await new Promise((resolve, reject) => {
+            const element = new Image(); element.onload = () => resolve(element); element.onerror = () => reject(new Error("画像を読み取れませんでした。")); element.src = url;
+          });
+          const maximum = 1600;
+          const scale = Math.min(1, maximum / Math.max(image.width, image.height));
+          const canvas = document.createElement("canvas");
+          canvas.width = Math.max(1, Math.round(image.width * scale));
+          canvas.height = Math.max(1, Math.round(image.height * scale));
+          canvas.getContext("2d").drawImage(image, 0, 0, canvas.width, canvas.height);
+          const dataUrl = canvas.toDataURL("image/jpeg", .84);
+          return { mimeType: "image/jpeg", base64: dataUrl.split(",")[1] };
+        } finally { URL.revokeObjectURL(url); }
+      }
+
+      function previewPhoto(file) {
+        if (!file) { state.referenceFile = null; $("photoPreview").classList.add("hidden"); return; }
+        if (!/^image\/(jpeg|png|webp)$/.test(file.type)) { $("referencePhoto").value = ""; return showToast("JPEG・PNG・WebP画像を選択してください。", "error"); }
+        if (file.size > 5 * 1024 * 1024) { $("referencePhoto").value = ""; return showToast("画像は5MB以下にしてください。", "error"); }
+        state.referenceFile = file;
+        const preview = $("photoPreview");
+        preview.src = URL.createObjectURL(file); preview.classList.remove("hidden");
+      }
+
+      function fillDemo() {
+        $("customerName").value = "ケーキ予約 テスト";
+        $("customerKana").value = "ケーキヨヤク テスト";
+        $("phone").value = "090-1111-2299";
+        $("email").value = "";
+        $("allergyNotes").value = "";
+        $("customerNote").value = "営業デモからの予約です。";
+        $("allergyAck").checked = true;
+        updateSubmitState(); showToast("デモ情報を入力しました。", "success");
+      }
+
+      $("closeModal").addEventListener("click", closeModal);
+      $("productModal").addEventListener("click", (event) => { if (event.target === $("productModal")) closeModal(); });
+      document.addEventListener("keydown", (event) => { if (event.key === "Escape" && !$("productModal").classList.contains("hidden")) closeModal(); });
+      $("itemQuantity").addEventListener("change", updateModalTotal);
+      $("addToCart").addEventListener("click", addToCart);
+      $("pickupDate").addEventListener("change", loadSlots);
+      $("referencePhoto").addEventListener("change", (event) => previewPhoto(event.target.files?.[0]));
+      $("submitOrder").addEventListener("click", () => submitOrder(false));
+      $("mobileSubmit").addEventListener("click", () => submitOrder(false));
+      $("demoFill").addEventListener("click", fillDemo);
+      ["customerName", "phone", "allergyAck"].forEach((id) => $(id).addEventListener(id === "allergyAck" ? "change" : "input", updateSubmitState));
+      initialize();
+    })();
+  </script>
+</body>
+</html>
